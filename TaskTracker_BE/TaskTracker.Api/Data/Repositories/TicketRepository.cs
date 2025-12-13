@@ -8,11 +8,17 @@ namespace TaskTracker.Api.Data.Repositories;
 
 public class TicketRepository(AppDbContext context, IMapper mapper) : ITicketRepository
 {
-    private readonly AppDbContext _context = context;
 
-    public async Task<IEnumerable<TicketDTO>> GetAllAsync(string? q, string? sort)
+    public async Task<TicketDTO> CreateAsync(TicketDTO ticket)
     {
-        var query = _context.Tickets.AsQueryable();
+        await context.Tickets.AddAsync(mapper.Map<Ticket>(ticket));
+        await context.SaveChangesAsync();
+        return ticket;
+    }
+
+    public async Task<List<TicketDTO>> GetAllAsync(string? q, string? sort)
+    {
+        var query = context.Tickets.AsQueryable();
 
         if (!string.IsNullOrEmpty(q))
         {
@@ -22,35 +28,36 @@ public class TicketRepository(AppDbContext context, IMapper mapper) : ITicketRep
                 t.Description.ToLower().Contains(q));
         }
 
-        query = sort == "dueDate:desc"
+        query = sort == "desc"
             ? query.OrderByDescending(t => t.DueDate)
             : query.OrderBy(t => t.DueDate);
 
-        return mapper.Map<IEnumerable<TicketDTO>>(await query.ToListAsync());
+        return mapper.Map<List<TicketDTO>>(await query.ToListAsync());
     }
 
     public async Task<TicketDTO?> GetByIdAsync(int id)
-        => mapper.Map<TicketDTO>(await _context.Tickets.FindAsync(id));
+        => mapper.Map<TicketDTO>(await context.Tickets.FindAsync(id));
 
-    public async Task<TicketDTO> CreateAsync(TicketDTO ticket)
+    public async Task<bool> UpdateAsync(TicketDTO dto)
     {
-        await _context.Tickets.AddAsync(mapper.Map<Ticket>(ticket));
-        await _context.SaveChangesAsync();
-        return ticket;
-    }
+        var existing = await context.Tickets
+            .FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-    public async Task<bool> UpdateAsync(TicketDTO ticket)
-    {
-        _context.Tickets.Update(mapper.Map<Ticket>(ticket));
-        return await _context.SaveChangesAsync() > 0;
+        if (existing == null)
+            return false;
+
+        // Map INTO the tracked entity
+        mapper.Map(dto, existing);
+
+        return await context.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var Ticket = await _context.Tickets.FindAsync(id);
+        var Ticket = await context.Tickets.FindAsync(id);
         if (Ticket == null) return false;
 
-        _context.Tickets.Remove(Ticket);
-        return await _context.SaveChangesAsync() > 0;
+        context.Tickets.Remove(Ticket);
+        return await context.SaveChangesAsync() > 0;
     }
 }

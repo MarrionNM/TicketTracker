@@ -1,0 +1,36 @@
+.tag {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+/* status pill colors */
+.status-New {
+  background: #4dabff33;
+  color: #0077d9;
+}
+.status-InProgress {
+  background: #ffe29a66;
+  color: #a57b00;
+}
+.status-Done {
+  background: #5cd67b44;
+  color: #0f8a32;
+}
+
+/* priority pill colors */
+.priority-Low {
+  background: #d9e9ff;
+  color: #335f9f;
+}
+.priority-Medium {
+  background: #ffe4c4;
+  color: #8a5a00;
+}
+.priority-High {
+  background: #ffd0d0;
+  color: #b70000;
+}

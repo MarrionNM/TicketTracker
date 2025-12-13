@@ -1,0 +1,171 @@
+.page-container {
+  padding: 28px;
+}
+
+/* HEADER */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+  }
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #3a71ff;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #245bdb;
+  }
+}
+
+/* SEARCH + SORT */
+.filter-bar {
+  margin-top: 22px;
+  display: flex;
+  gap: 14px;
+
+  .search-box,
+  .sort-select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: #3a71ff;
+      box-shadow: 0 0 0 2px #3a71ff33;
+    }
+  }
+
+  .search-box {
+    flex: 1;
+  }
+
+  .sort-select {
+    width: 210px;
+    background: white;
+  }
+}
+
+/* LOADING STATE */
+.loading-state {
+  margin-top: 60px;
+  text-align: center;
+
+  .spinner {
+    width: 38px;
+    height: 38px;
+    border: 4px solid #ddd;
+    border-top-color: #3a71ff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 12px;
+  }
+
+  p {
+    color: #777;
+    font-size: 15px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* EMPTY STATE */
+.empty-state {
+  margin-top: 50px;
+  text-align: center;
+
+  img {
+    width: 130px;
+    opacity: 0.7;
+  }
+
+  h3 {
+    margin-top: 14px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    color: #777;
+    margin-bottom: 20px;
+  }
+}
+
+/* CARD GRID */
+.ticket-grid {
+  margin-top: 24px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* TICKET CARD */
+.ticket-card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .id {
+      color: #999;
+      font-size: 14px;
+    }
+  }
+
+  .description {
+    margin-top: 8px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .meta {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .chevron {
+    position: absolute;
+    right: 16px;
+    bottom: 18px;
+    font-size: 20px;
+    color: #bbb;
+  }
+}

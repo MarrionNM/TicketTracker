@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "QKixCY5dn+A=",
+  "dgSpecHash": "PRhXqz+bIdc=",
   "success": true,
   "projectFilePath": "/Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/TaskTracker.Api.csproj",
   "expectedPackageFiles": [
     "/Users/nkosinathi/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/Users/nkosinathi/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/Users/nkosinathi/.nuget/packages/fluentvalidation/12.1.1/fluentvalidation.12.1.1.nupkg.sha512",
+    "/Users/nkosinathi/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "/Users/nkosinathi/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "/Users/nkosinathi/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/nkosinathi/.nuget/packages/microsoft.aspnetcore.openapi/8.0.14/microsoft.aspnetcore.openapi.8.0.14.nupkg.sha512",
     "/Users/nkosinathi/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

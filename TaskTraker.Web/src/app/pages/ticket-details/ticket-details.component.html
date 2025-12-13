@@ -1,0 +1,58 @@
+<!-- LOADING STATE -->
+<div class="loading-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Loading ticket...</p>
+</div>
+
+<!-- EMPTY / NOT FOUND -->
+<div class="empty-container" *ngIf="!loading && !ticket">
+  <h2>Ticket not found</h2>
+  <p>The ticket you're looking for doesn't exist or was removed.</p>
+
+  <button class="btn-primary" (click)="back()">Back to Tickets</button>
+</div>
+
+<!-- DETAILS PAGE -->
+<div class="details-page" *ngIf="!loading && ticket">
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="back-btn" (click)="back()">← Back</button>
+
+    <button class="edit-btn" (click)="editTicket(ticket.id!)">
+      Edit Ticket
+    </button>
+  </div>
+
+  <!-- TITLE -->
+  <h1 class="title">{{ ticket.title }}</h1>
+
+  <!-- TAGS -->
+  <div class="tags-row">
+    <app-tags type="status" [value]="ticket.status"></app-tags>
+    <app-tags type="priority" [value]="ticket.priority"></app-tags>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="section">
+    <h2>Description</h2>
+    <p>{{ ticket.description }}</p>
+  </div>
+
+  <!-- META BOX -->
+  <div class="meta-box">
+    <div class="row">
+      <span class="label">Ticket ID:</span>
+      <span class="value">#{{ ticket.id }}</span>
+    </div>
+
+    <div class="row">
+      <span class="label">Created:</span>
+      <span class="value">{{ ticket.createdAt | date : "mediumDate" }}</span>
+    </div>
+
+    <div class="row">
+      <span class="label">Due Date:</span>
+      <span class="value">{{ ticket.dueDate | date : "mediumDate" }}</span>
+    </div>
+  </div>
+</div>

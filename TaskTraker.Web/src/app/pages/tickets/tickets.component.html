@@ -1,0 +1,57 @@
+<div class="page-container">
+  <!-- HEADER -->
+  <header class="page-header">
+    <h1>Tickets</h1>
+
+    <button class="btn-primary" (click)="goToCreate()">Create Ticket</button>
+  </header>
+
+  <!-- SEARCH + SORT -->
+  <div class="filter-bar">
+    <input
+      type="text"
+      class="search-box"
+      placeholder="Search tickets..."
+      [(ngModel)]="searchText"
+      (input)="applySearch()"
+    />
+
+    <select class="sort-select" [(ngModel)]="sortOrder" (change)="applySort()">
+      <option value="">Sort by Due Date</option>
+      <option value="asc">Due Date — Earliest First</option>
+      <option value="desc">Due Date — Latest First</option>
+    </select>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading tickets...</p>
+  </div>
+
+  <!-- EMPTY -->
+  <div class="empty-state" *ngIf="!loading && tickets.length === 0">
+    <h3>No tickets found</h3>
+    <p>Creating a new ticket.</p>
+
+    <button class="btn-primary" (click)="goToCreate()">Create Ticket</button>
+  </div>
+
+  <div class="ticket-grid" *ngIf="!loading && tickets.length > 0">
+    <div class="ticket-card" *ngFor="let t of tickets" (click)="openTicket(t)">
+      <div class="top">
+        <h2>{{ t.title }}</h2>
+        <span class="id">#{{ t.id }}</span>
+      </div>
+
+      <p class="description">{{ t.description }}</p>
+
+      <div class="meta">
+        <app-tags type="status" [value]="t.status" />
+        <app-tags type="priority" [value]="t.priority" />
+      </div>
+
+      <span class="chevron">›</span>
+    </div>
+  </div>
+</div>

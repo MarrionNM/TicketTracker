@@ -6,6 +6,9 @@ using TaskTracker.Api;
 using TaskTracker.Api.Contracts;
 using TaskTracker.Api.Data.Seeding;
 using TaskTracker.Api.Data.Repositories;
+using TaskTracker.API.Helpers.Exceptions;
+using FluentValidation;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Repository DI
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
-// AutoMapper
+// Validation + Mapping
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(typeof(Program));
 
 // CORS
@@ -38,9 +42,7 @@ builder.Services.AddCors(options =>
         policy.AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
-              .WithOrigins("http://localhost:4200",
-                           "http://localhost:5173",
-                           "http://localhost:3000");
+              .WithOrigins("http://localhost:4200");
     });
 });
 
@@ -94,6 +96,9 @@ app.UseExceptionHandler(errorApp =>
         await context.Response.WriteAsJsonAsync(problem);
     });
 });
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 if (app.Environment.IsDevelopment())
 {

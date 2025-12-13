@@ -1,0 +1,112 @@
+<div class="create-container">
+  <!-- API ERROR -->
+  <div class="api-error" *ngIf="apiError" [innerHTML]="apiError">
+    {{ apiError }}
+  </div>
+
+  <!-- LOADING STATE WHEN FETCHING EXISTING TICKET -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading ticket...</p>
+  </div>
+
+  <!-- FORM -->
+  <div *ngIf="!loading">
+    <div class="header">
+      <h1>{{ isEdit ? "Edit Ticket" : "Create Ticket" }}</h1>
+      <button class="btn-secondary" (click)="cancel()">Back</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="ticket-form">
+      <!-- TITLE -->
+      <div class="form-group">
+        <label>Title</label>
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="Enter title..."
+        />
+        <p
+          class="error"
+          *ngIf="
+            form.controls.title.touched &&
+            form.controls.title.hasError('required')
+          "
+        >
+          Title is required.
+        </p>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="form-group">
+        <label>Description</label>
+        <textarea
+          formControlName="description"
+          placeholder="Describe the task..."
+        ></textarea>
+        <p
+          class="error"
+          *ngIf="
+            form.controls.description.touched &&
+            form.controls.description.hasError('required')
+          "
+        >
+          Description is required.
+        </p>
+      </div>
+
+      <!-- STATUS -->
+      <div class="form-group">
+        <label>Status</label>
+        <select formControlName="status">
+          <option [ngValue]="null">Select status...</option>
+          <option *ngFor="let status of statusOptions" [ngValue]="status.id">
+            {{ status.label }}
+          </option>
+        </select>
+        <p
+          class="error"
+          *ngIf="
+            form.controls.status.touched &&
+            form.controls.status.hasError('required')
+          "
+        >
+          Status is required.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Priority</label>
+        <select formControlName="priority">
+          <option [ngValue]="null">Select priority...</option>
+          <option *ngFor="let p of priorityOptions" [ngValue]="p.id">
+            {{ p.label }}
+          </option>
+        </select>
+        <p
+          class="error"
+          *ngIf="
+            form.controls.priority.touched &&
+            form.controls.priority.hasError('required')
+          "
+        >
+          Priority is required.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label>Due Date</label>
+        <input type="date" formControlName="dueDate" />
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" type="submit" [disabled]="submitting">
+          <span *ngIf="!submitting">{{
+            isEdit ? "Save Changes" : "Create Ticket"
+          }}</span>
+          <span *ngIf="submitting">Saving...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

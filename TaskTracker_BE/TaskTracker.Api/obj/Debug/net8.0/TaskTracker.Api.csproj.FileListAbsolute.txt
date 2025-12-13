@@ -513,3 +513,6 @@
 /Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/obj/Debug/net8.0/TaskTracker.Api.pdb
 /Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/obj/Debug/net8.0/TaskTracker.Api.genruntimeconfig.cache
 /Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/obj/Debug/net8.0/ref/TaskTracker.Api.dll
+/Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/bin/Debug/net8.0/FluentValidation.dll
+/Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/nkosinathi/Documents/Personal/TaskTracker/TaskTracker_BE/TaskTracker.Api/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll

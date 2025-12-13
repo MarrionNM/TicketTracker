@@ -1,89 +1,73 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using TaskTracker.Api.Contracts;
 using TaskTracker.Api.Data.DTO;
 
-// using TaskTracker.Api.Data.DTO;
-using TaskTracker.Api.Data.Models;
-using TaskTracker.Api.Data.Repositories;
+using TaskTracker.Api.Data.Response;
+using TaskTracker.API.Helpers;
 
 namespace TaskTracker.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TicketController(ITicketRepository repo) : ControllerBase
+public class TicketController(ITicketRepository repo,
+IValidator<TicketDTO> validator
+) : ControllerBase
 {
-    private readonly ITicketRepository _repo = repo;
-
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<TicketDTO>>> GetTasks(
-        [FromQuery] string? q,
-        [FromQuery] string? sort = "dueDate:asc")
+    [HttpPost]
+    public async Task<ActionResult> Create(TicketDTO task)
     {
-        var tasks = await _repo.GetAllAsync(q, sort);
+        validator.ValidateAndThrowValidationException(task);
 
-        return Ok(tasks);
-    }
+        task = await repo.CreateAsync(task);
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<TicketDTO>> GetTask(int id)
-    {
-        var t = await _repo.GetByIdAsync(id);
-        if (t == null) return NotFound();
-
-        return Ok(new TicketDTO
+        return Ok(new Response<TicketDTO>
         {
-            Id = t.Id,
-            Title = t.Title,
-            Description = t.Description,
-            Status = t.Status,
-            Priority = t.Priority,
-            DueDate = t.DueDate,
-            CreatedAt = t.CreatedAt
+            IsSuccess = true,
+            Data = task
         });
     }
 
-    [HttpPost]
-    public async Task<ActionResult<TicketDTO>> Create(TicketDTO dto)
+    [HttpGet]
+    public async Task<ActionResult> GetTasks(
+        [FromQuery] string? q,
+        [FromQuery] string? sort = "dueDate:asc")
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        var tasks = await repo.GetAllAsync(q, sort);
 
-        var task = new TicketDTO
+        return Ok(new Response<List<TicketDTO>>() { Data = tasks, IsSuccess = true });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetTask(int id)
+    {
+        var task = await repo.GetByIdAsync(id);
+
+        if (task == null)
+            return NotFound(new Response<TicketDTO> { Message = "Task not found", IsSuccess = false });
+
+        return Ok(new Response<TicketDTO>
         {
-            Title = dto.Title,
-            Description = dto.Description,
-            Status = dto.Status,
-            Priority = dto.Priority,
-            DueDate = dto.DueDate,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        await _repo.CreateAsync(task);
-
-        return Ok();
+            IsSuccess = true,
+            Data = task
+        });
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, TicketDTO dto)
+    public async Task<IActionResult> Update(int id, TicketDTO task)
     {
-        var existing = await _repo.GetByIdAsync(id);
-        if (existing == null) return NotFound();
+        validator.ValidateAndThrowValidationException(task);
 
-        existing.Title = dto.Title;
-        existing.Description = dto.Description;
-        existing.Status = dto.Status;
-        existing.Priority = dto.Priority;
-        existing.DueDate = dto.DueDate;
-
-        await _repo.UpdateAsync(existing);
+        await repo.UpdateAsync(task);
 
         return NoContent();
     }
 
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _repo.DeleteAsync(id);
+        var deleted = await repo.DeleteAsync(id);
         if (!deleted) return NotFound();
 
         return NoContent();
