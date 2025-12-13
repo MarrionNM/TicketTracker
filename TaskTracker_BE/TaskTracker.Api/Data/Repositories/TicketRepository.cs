@@ -46,7 +46,6 @@ public class TicketRepository(AppDbContext context, IMapper mapper) : ITicketRep
         if (existing == null)
             return false;
 
-        // Map INTO the tracked entity
         mapper.Map(dto, existing);
 
         return await context.SaveChangesAsync() > 0;

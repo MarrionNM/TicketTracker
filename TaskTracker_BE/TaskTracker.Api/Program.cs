@@ -12,10 +12,6 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ------------------------------------------------------------
-// SERVICES
-// ------------------------------------------------------------
-
 // Controllers
 builder.Services.AddControllers();
 
@@ -27,7 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("TaskTrackerDb"));
 
-// Repository DI
+// Repository
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 // Validation + Mapping
@@ -54,7 +50,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
         var problemDetails = new ValidationProblemDetails(context.ModelState)
         {
             Status = StatusCodes.Status400BadRequest,
-            Type = "https://example.com/validation-error",
+            Type = "https://localhost:5283/validation-error",
             Title = "Validation failed",
             Detail = "One or more validation errors occurred."
         };
@@ -67,10 +63,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddHttpLogging(o => { });
 
 var app = builder.Build();
-
-// ------------------------------------------------------------
-// MIDDLEWARE
-// ------------------------------------------------------------
 
 // HTTP Logging
 app.UseHttpLogging();
@@ -87,7 +79,7 @@ app.UseExceptionHandler(errorApp =>
             Title = "An unexpected error occurred.",
             Detail = exception?.Message,
             Status = (int)HttpStatusCode.InternalServerError,
-            Type = "https://example.com/errors/internal-server-error"
+            Type = "https://localhost:5283/errors/internal-server-error"
         };
 
         context.Response.ContentType = "application/problem+json";
@@ -108,13 +100,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowFrontend");
+app.UseCors("SPA");
 
 app.MapControllers();
 
-// ------------------------------------------------------------
-// SEED DATABASE
-// ------------------------------------------------------------
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
