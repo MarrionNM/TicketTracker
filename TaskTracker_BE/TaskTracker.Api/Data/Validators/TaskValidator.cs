@@ -17,8 +17,12 @@ public class TaskValidator : AbstractValidator<TicketDTO>
             .MinimumLength(5)
             .WithMessage("Task description must be at least 5 characters");
 
+        RuleFor(x => x.Status)
+            .IsInEnum()
+            .WithMessage("Invalid status value.");
+
         RuleFor(x => x.Priority)
-            .NotNull()
-            .WithMessage("Task priority is required");
+            .IsInEnum()
+            .WithMessage("Invalid priority value.");
     }
 }

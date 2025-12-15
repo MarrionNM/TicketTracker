@@ -11,6 +11,7 @@ using FluentValidation;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+var CORS = "SPA";
 
 // Controllers
 builder.Services.AddControllers();
@@ -33,7 +34,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy(CORS, policy =>
     {
         policy.AllowAnyHeader()
               .AllowAnyMethod()
@@ -64,7 +65,6 @@ builder.Services.AddHttpLogging(o => { });
 
 var app = builder.Build();
 
-// HTTP Logging
 app.UseHttpLogging();
 
 // Global Exception Handling
@@ -100,7 +100,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("SPA");
+app.UseCors(CORS);
 
 app.MapControllers();
 

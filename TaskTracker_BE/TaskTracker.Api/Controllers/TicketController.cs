@@ -58,6 +58,8 @@ IValidator<TicketDTO> validator
     {
         validator.ValidateAndThrowValidationException(task);
 
+        // Map the editing Id to the task model
+        task.Id = id;
         await repo.UpdateAsync(task);
 
         return NoContent();

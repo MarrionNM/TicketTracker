@@ -96,8 +96,7 @@ export class CreateTicketComponent implements OnInit {
 
     this.submitting = true;
 
-    const payload = {
-      id: this.ticketId,
+    const task = {
       title: this.form.value.title,
       description: this.form.value.description,
       status: Number(this.form.value.status),
@@ -106,8 +105,8 @@ export class CreateTicketComponent implements OnInit {
     };
 
     const request$ = this.isEdit
-      ? this.api.updateTicket(this.ticketId!, payload)
-      : this.api.createTicket(payload);
+      ? this.api.updateTicket(this.ticketId!, task)
+      : this.api.createTicket(task);
 
     request$.subscribe({
       next: () => {
